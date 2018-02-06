@@ -7,11 +7,13 @@ const userServiceProxy = httpProxy('http://localhost:5000')
 
 // Authentication
 app.use((req, res, next) => {
-  let token = req.headers.authorization.split(" ");
+  if (req.headers.authorization) {
+    let token = req.headers.authorization.split(" ");
 
-  var decoded = jwt.decode(token[1]);
+    var decoded = jwt.decode(token[1]);
 
-  req.headers['X-ViviPay-User-Id'] = decoded.sub;
+    req.headers['X-ViviPay-User-Id'] = decoded.sub;
+  }
 
   next()
 })
